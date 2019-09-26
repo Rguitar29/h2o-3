@@ -69,7 +69,7 @@ public class Merge {
   // single-threaded driver logic.  Merge left and right frames based on common columns.
   public static Frame merge(final Frame leftFrame, final Frame riteFrame, final int leftCols[], final int riteCols[],
                             boolean allLeft, int[][] id_maps, int[] ascendingL, int[] ascendingR) {
-    if (allLeft)
+    if (allLeft && (riteFrame.numRows()==0))
       return sortOnly(leftFrame,  leftCols, id_maps, ascendingL);
     final boolean hasRite = riteCols.length > 0;
 
