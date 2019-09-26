@@ -2,13 +2,19 @@ setwd(normalizePath(dirname(R.utils::commandArgs(asValues=TRUE)$"f")))
 source("../../../scripts/h2o-r-test-setup.R")
 library(MASS)
 ##
-# Comparison of H2O to R with varying link functions for the Negative Binomial family on prostate dataset
-# Link functions: log (canonical link)
-#				  identity
-# With fixed and optimized theta values.
+# Copy example from HGLM package and compare results from our implementation.
 ##
 
-test.linkFunctions <- function(){
+test.HGLMData1 <- function() {
+  set.seed(123)
+  n.clus <- 5 # number of clusters
+  n.per.clus <- 20 # Number of points within each cluster
+  sigma2_u <- 0.2  # variance of random effect
+  sigma2_e <- 1 # residual_deviance
+  n <- n.clus
+
+
+
   print("Read in prostate data.")
   h2o.data = h2o.uploadFile(locate("smalldata/prostate/prostate_complete.csv.zip"), destination_frame="h2o.data")    
   R.data = as.data.frame(as.matrix(h2o.data))
@@ -45,12 +51,10 @@ compareModels <- function(h2oModel, rModel){
   if (difference > 0.01) {
     print(cat("Deviance in H2O: ", h2oDeviance))
     print(cat("Deviance in R: ", rDeviance))
-    #  checkTrue(difference <= 0.01, "h2o's model's residualDeviance/nullDeviance is more than 0.01 lower than R's model's")
+
   }
-  
-  # compare 
 }
 
-doTest("Comparison of H2O to R with varying link functions for the Negative Binomial family", test.linkFunctions)
+doTest("Comparison of H2O to R with HGLM 1", test.HGLMData1)
 
 
